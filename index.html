@@ -1,280 +1,521 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>91官方网站</title>
-    <style>
-        /* 基础重置 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>91官方网站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --accent:#e63946;--accent2:#2ec4b6;
+      --bg:#0a0a0f;--surface:rgba(16,16,26,.97);
+      --text:#f1f1f1;--muted:#9a9ab0;
+      --radius:1.3rem;--blur:blur(18px);
+    }
+    html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);
+      font-family:'Noto Serif SC',serif;color:var(--text)}
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #000;
-        }
+    /* ── 粒子背景 ── */
+    #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.3}
 
-        /* 年龄验证弹窗（模糊背景） */
-        #age-verification-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.95);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            animation: modalEnter 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-        }
+    /* ── 年龄弹窗 ── */
+    #age-modal{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+      z-index:900;background:rgba(0,0,0,.85);
+      backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+      animation:fadeIn .4s ease;
+    }
+    。modal-box{
+      position:relative;background:var(--surface);
+      border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);
+      padding:clamp(1.6rem,5vw,2.8rem) clamp(1.8rem,6vw,3.2rem);
+      max-width:min(460px,92vw);text-align:center;
+      box-shadow:0 24px 64px rgba(0,0,0,.75),0 0 0 1px rgba(230,57,70,.12);
+      animation:slideUp .5s cubic-bezier(.17,.67,.35,1.28);
+    }
+    。modal-badge{
+      display:inline-block;
+      background:linear-gradient(135deg,var(--accent),#ff6b6b);
+      color:#fff;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+      padding:.25rem .8rem;border-radius:99px;margin-bottom:1.2rem;
+    }
+    。modal-box h2{
+      font-size:clamp(1.3rem,4vw,1.7rem);font-weight:700;margin-bottom:.8rem;
+      background:linear-gradient(135deg,#fff 30%,#c9c9e0);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    。modal-box p{font-size:.92rem;color:var(--muted);line-height:1.75;margin-bottom:1.8rem}
+    。modal-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+    。btn{
+      padding:.72rem 1.8rem;border:none;border-radius:.7rem;font-size:.93rem;
+      font-weight:600;font-family:inherit;cursor:pointer;min-width:128px;
+      transition:transform .18s,filter .18s;letter-spacing:.02em;
+    }
+    。btn:hover{transform:translateY(-3px);filter:brightness(1.1)}
+    。btn:active{transform:scale(.96)!important}
+    。btn-confirm{background:linear-gradient(135deg,#2ec4b6,#1aab9e);color:#fff;
+      box-shadow:0 6px 20px rgba(46,196,182,.35)}
+    。btn-deny{background:linear-gradient(135deg,var(--accent),#c1121f);color:#fff;
+      box-shadow:0 6px 20px rgba(230,57,70,.35)}
+    。modal-footer{margin-top:1.4rem;font-size:.7rem;color:rgba(154,154,176,.45)}
 
-        .modal-content {
-            background: linear-gradient(145deg, rgba(248,249,250,0.95), rgba(255,255,255,0.95));
-            padding: 2.5rem;
-            border-radius: 1.2rem;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255,255,255,0.1);
-            max-width: 90%;
-            transform-origin: center;
-        }
+    /* ── 加载 ── */
+    #loader{
+      position:fixed;inset:0;display:none;
+      align-items:center;justify-content:center;flex-direction:column;gap:1rem;
+      z-index:800;background:var(--bg);
+    }
+    。ring{
+      width:52px;height:52px;
+      border:3px solid rgba(255,255,255,.1);
+      border-top-color:var(--accent2);border-right-color:var(--accent);
+      border-radius:50%;animation:spin .85s linear infinite;
+    }
+    #loader p{font-size:.83rem;color:var(--muted);letter-spacing:.05em;animation:pulse 1.4s ease-in-out infinite}
 
-        @keyframes modalEnter {
-            0% { opacity: 0; transform: translateY(-20px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
+    /* ── 错误提示 ── */
+    #error-box{
+      position:fixed;inset:0;display:none;
+      align-items:center;justify-content:center;flex-direction:column;gap:1.2rem;
+      z-index:850;background:var(--bg);text-align:center;padding:2rem;
+    }
+    #error-box h3{color:var(--accent);font-size:1.1rem}
+    #error-box p{color:var(--muted);font-size:.85rem;max-width:380px;line-height:1.6}
+    #error-box button{padding:.6rem 1.4rem;background:var(--accent2);color:#fff;
+      border:none;border-radius:.6rem;font-family:inherit;cursor:pointer;font-size:.88rem}
 
-        /* 视频容器（全屏） */
-        #video-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: none;
-            background: #000;
-            z-index: 100;
-        }
+    /* ── 播放区 ── */
+    #player-wrap{
+      position:fixed;inset:0;display:none;
+      align-items:center;justify-content:center;background:#000;z-index:700;
+    }
+    #main-video{
+      width:100%;height:100%;
+      object-fit:contain;background:#000;outline:none;
+    }
+    @media (orientation:portrait) and (max-width:768px){
+      #main-video{object-fit:cover}
+    }
 
-        .video-wrapper {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            max-width: 1920px;
-            max-height: 1080px;
-        }
+    /* ── 播放列表侧栏 ── */
+    #playlist{
+      position:fixed;top:0;right:0;height:100%;width:min(260px,85vw);
+      background:rgba(10,10,18,.92);backdrop-filter:var(--blur);
+      -webkit-backdrop-filter:var(--blur);
+      border-left:1px solid rgba(255,255,255,.07);
+      z-index:910;display:none;flex-direction:column;
+      transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    #playlist.open{transform:translateX(0)}
+    #playlist-header{
+      padding:1rem 1.2rem;font-size:.8rem;letter-spacing:.08em;
+      color:var(--muted);border-bottom:1px solid rgba(255,255,255,.06);
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    #playlist-header span{font-size:.95rem;color:var(--text)}
+    #playlist-list{flex:1;overflow-y:auto;padding:.5rem 0}
+    #playlist-list::-webkit-scrollbar{width:4px}
+    #playlist-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:2px}
+    .pl-item{
+      display:flex;align-items:center;gap:.8rem;
+      padding:.75rem 1.2rem;cursor:pointer;transition:background .15s;
+      border-bottom:1px solid rgba(255,255,255,.04);
+    }
+    .pl-item:hover{background:rgba(255,255,255,.06)}
+    .pl-item.active{background:rgba(46,196,182,.12);border-left:3px solid var(--accent2)}
+    .pl-num{
+      flex-shrink:0;width:24px;height:24px;border-radius:50%;
+      background:rgba(255,255,255,.08);display:flex;align-items:center;
+      justify-content:center;font-size:.7rem;color:var(--muted);
+    }
+    .pl-name{font-size:.78rem;color:var(--text);line-height:1.4;
+      overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+    .pl-size{font-size:.65rem;color:var(--muted);margin-top:.15rem}
 
-        #main-video {
-            width: 100%;
-            height: 100%;
-            border: none;
-            object-fit: contain;
-        }
+    /* ── 控制栏 ── */
+    #ctrl-bar{
+      position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);
+      display:none;align-items:center;gap:.7rem;
+      background:rgba(8,8,14,.8);backdrop-filter:var(--blur);
+      -webkit-backdrop-filter:var(--blur);
+      border:1px solid rgba(255,255,255,.09);
+      padding:.5rem 1.1rem;border-radius:99px;z-index:950;
+      animation:fadeIn .4s ease;
+    }
+    .cbtn{
+      background:none;border:none;cursor:pointer;
+      color:rgba(255,255,255,.7);font-size:1.05rem;
+      padding:.28rem .4rem;border-radius:.35rem;
+      transition:color .12s,background .12s;
+    }
+    .cbtn:hover{color:#fff;background:rgba(255,255,255,.1)}
+    #vol-sl{
+      -webkit-appearance:none;appearance:none;
+      width:80px;height:4px;border-radius:2px;
+      background:rgba(255,255,255,.18);outline:none;cursor:pointer;
+    }
+    #vol-sl::-webkit-slider-thumb{
+      -webkit-appearance:none;width:13px;height:13px;
+      border-radius:50%;background:var(--accent2);cursor:pointer;
+    }
+    #progress-wrap{
+      position:fixed;bottom:0;left:0;right:0;height:3px;
+      background:rgba(255,255,255,.08);z-index:960;cursor:pointer;
+    }
+    #progress-bar{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0;transition:width .3s}
+    .divider{width:1px;height:16px;background:rgba(255,255,255,.12)}
 
-        .spinner {
-            width: 3rem;
-            height: 3rem;
-            border: 3px solid rgba(255,255,255,0.2);
-            border-top-color: #4CAF50;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* 按钮样式 */
-        .modal-btn {
-            margin: 1rem;
-            padding: 0.8rem 2rem;
-            border: none;
-            border-radius: 0.6rem;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 120px;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-
-        #yes-btn {
-            background: rgba(76,175,80,0.9);
-            color: white;
-            box-shadow: 0 4px 12px rgba(76,175,80,0.3);
-        }
-
-        #no-btn {
-            background: rgba(244,67,54,0.9);
-            color: white;
-            box-shadow: 0 4px 12px rgba(244,67,54,0.3);
-        }
-
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-        }
-
-        /* 响应式适配 */
-        @media (max-width: 768px) {
-            .modal-content {
-                padding: 1.5rem;
-            }
-
-            #main-video {
-                object-fit: cover;
-            }
-
-            @media (orientation: portrait) {
-                .video-wrapper {
-                    width: 100vh;
-                    height: 56.25vh;
-                    transform: translate(-50%, -50%) rotate(90deg);
-                }
-            }
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
+    /* ── 关键帧 ── */
+    @keyframes fadeIn {from{opacity:0}to{opacity:1}}
+    @keyframes slideUp{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+  </style>
 </head>
 <body>
-    <!-- 年龄验证弹窗 -->
-    <div id="age-verification-modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 1.5rem; color: #333;">年龄验证</h2>
-            <p style="color: #666; margin-bottom: 2rem; line-height: 1.6;">
-                根据相关法律法规要求，请确认您已年满18周岁
-            </p>
-            <button id="yes-btn" class="modal-btn">确认已满18岁</button>
-            <button id="no-btn" class="modal-btn">未满18岁</button>
-        </div>
+
+<canvas id="bg-canvas"></canvas>
+
+<!-- 年龄验证 -->
+<div id="age-modal">
+  <div class="modal-box">
+    <span class="modal-badge">⚠ 内容警告</span>
+    <h2>年龄验证</h2>
+    <p>本网站含有仅适合 <strong style="color:var(--accent2)">18岁及以上</strong> 成年人的内容。<br>
+      继续访问即表示您确认已达法定年龄，并同意相关服务条款与法律法规。</p>
+    <div class="modal-actions">
+      <button class="btn btn-confirm" id="yes-btn">✔ 我已满 18 岁</button>
+      <button class="btn btn-deny"    id="no-btn">✘ 未满 18 岁</button>
     </div>
+    <p class="modal-footer">根据《网络安全法》等相关法律法规要求</p>
+  </div>
+</div>
 
-    <!-- 加载指示器 -->
-    <div class="loader">
-        <div class="spinner"></div>
-    </div>
+<!-- 加载中 -->
+<div id="loader">
+  <div class="ring"></div>
+  <p id="loader-text">正在读取 GitHub Release…</p>
+</div>
 
-    <!-- 视频容器 -->
-    <div id="video-container">
-        <div class="video-wrapper">
-            <iframe 
-                id="main-video"
-                src="//player.bilibili.com/player.html?isOutside=true&aid=80433022&bvid=BV1GJ411x7h7&cid=137649199&p=1&autoplay=1"
-                scrolling="no"
-                frameborder="0"
-                allowfullscreen>
-            </iframe>
-        </div>
-    </div>
+<!-- 错误提示 -->
+<div id="error-box">
+  <h3>⚠ 加载失败</h3>
+  <p id="error-msg">无法获取视频列表，请检查仓库设置。</p>
+  <button onclick="location.reload()">重新加载</button>
+</div>
 
-    <script>
-        // 安全关闭窗口函数
-        const secureWindowClose = () => {
-            // 立即隐藏内容
-            document.documentElement.style.opacity = '0';
-            document.body.style.pointerEvents = 'none';
+<!-- 播放区 -->
+<div id="player-wrap">
+  <video id="main-video" autoplay playsinline preload="auto"></video>
+</div>
 
-            try {
-                // 多浏览器关闭方案
-                if (window.history.length <= 1) {
-                    window.close();
-                } else {
-                    window.open('', '_self').close();
-                }
+<!-- 进度条 -->
+<div id="progress-wrap"><div id="progress-bar"></div></div>
 
-                // 关闭状态检测
-                setTimeout(() => {
-                    if (!window.closed) {
-                        document.body.innerHTML = '';
-                        window.location.replace('about:blank');
-                    }
-                }, 100);
+<!-- 控制栏 -->
+<div id="ctrl-bar">
+  <button class="cbtn" id="btn-prev"  title="上一个">⏮</button>
+  <button class="cbtn" id="btn-play"  title="播放/暂停">⏸</button>
+  <button class="cbtn" id="btn-next"  title="下一个">⏭</button>
+  <div class="divider"></div>
+  <button class="cbtn" id="btn-mute"  title="静音">🔊</button>
+  <input  type="range" id="vol-sl" min="0" max="1" step="0.02" value="1" title="音量"/>
+  <div class="divider"></div>
+  <button class="cbtn" id="btn-list"  title="播放列表">☰</button>
+  <button class="cbtn" id="btn-fs"    title="全屏">⛶</button>
+</div>
 
-                // iOS特殊处理
-                if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-                    window.stop();
-                    document.body.innerHTML = '<p style="padding:20px;text-align:center;color:#fff">请手动关闭本页</p>';
-                }
-            } catch (e) {
-                window.location.href = 'about:blank';
-            }
-        };
+<!-- 播放列表 -->
+<div id="playlist">
+  <div id="playlist-header">
+    <span>📂 视频列表</span>
+    <button class="cbtn" id="btn-close-list" style="font-size:.8rem">✕</button>
+  </div>
+  <div id="playlist-list"></div>
+</div>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('age-verification-modal');
-            const yesBtn = document.getElementById('yes-btn');
-            const noBtn = document.getElementById('no-btn');
-            const videoContainer = document.getElementById('video-container');
-            const loader = document.querySelector('.loader');
-            const videoIframe = document.getElementById('main-video');
+<script>
+/* ══════════════════════════════════════════════
+   ★ 配置区 — 只需修改这里
+   ══════════════════════════════════════════════ */
+const CONFIG = {
+  // GitHub 仓库：owner/repo 格式
+  repo: "ForwardStar/91video",       // ← 改成你的仓库
 
-            // 初始化显示验证弹窗
-            modal.style.display = 'flex';
+  // Release 标签，"latest" 表示最新一个，也可填 "v1.0" 等具体标签
+  tag: "latest",
 
-            // 确认按钮处理
-            yesBtn.addEventListener('click', () => {
-                modal.style.display = 'none';
-                loader.style.display = 'block';
-                
-                // 显示视频容器
-                videoContainer.style.display = 'block';
-                
-                // 视频加载完成处理
-                videoIframe.onload = () => {
-                    loader.style.display = 'none';
-                    // 自动调整视频尺寸
-                    const resizeVideo = () => {
-                        const aspectRatio = 16/9;
-                        const windowWidth = window.innerWidth;
-                        const windowHeight = window.innerHeight;
+  // 可选：Personal Access Token（私有仓库或提高 API 速率限制时填入）
+  // 公开仓库留空即可，不需要 Token
+  token: "",
 
-                        if (windowWidth/windowHeight > aspectRatio) {
-                            videoIframe.style.width = `${windowHeight * aspectRatio}px`;
-                            videoIframe.style.height = `${windowHeight}px`;
-                        } else {
-                            videoIframe.style.width = `${windowWidth}px`;
-                            videoIframe.style.height = `${windowWidth / aspectRatio}px`;
-                        }
-                    }
+  // 视频扩展名白名单
+  videoExts: [".mp4", ".m4v", ".webm", ".mov", ".mkv"],
+};
+/* ══════════════════════════════════════════════ */
 
-                    resizeVideo();
-                    window.addEventListener('resize', resizeVideo);
-                }
+const $ = id => document.getElementById(id);
+let playlist = [];   // { name, url, size }
+let curIdx   = 0;
 
-                // 视频加载失败处理
-                videoIframe.onerror = () => {
-                    loader.style.display = 'none';
-                    alert('视频加载失败，请刷新重试');
-                    videoContainer.style.display = 'none';
-                    modal.style.display = 'flex';
-                }
-            });
+/* ── 粒子背景 ── */
+(function(){
+  const c = $('bg-canvas'), ctx = c.getContext('2d');
+  const resize = () => { c.width = innerWidth; c.height = innerHeight; };
+  resize(); addEventListener('resize', resize);
+  const pts = Array.from({length:55}, () => ({
+    x: Math.random()*innerWidth, y: Math.random()*innerHeight,
+    r: Math.random()*1.6+.3,
+    vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+  }));
+  (function loop(){
+    ctx.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=c.width; if(p.x>c.width)p.x=0;
+      if(p.y<0)p.y=c.height; if(p.y>c.height)p.y=0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(200,200,255,.6)'; ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
 
-            // 拒绝按钮处理
-            noBtn.addEventListener('click', () => {
-                alert('根据相关法律法规，未满18岁用户无法访问此内容');
-                secureWindowClose();
-            });
+/* ── 工具：文件大小格式化 ── */
+function fmtSize(b){
+  if(!b) return '';
+  if(b<1024) return b+'B';
+  if(b<1048576) return (b/1024).toFixed(1)+'KB';
+  if(b<1073741824) return (b/1048576).toFixed(1)+'MB';
+  return (b/1073741824).toFixed(2)+'GB';
+}
 
-            // ESC键监听
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    secureWindowClose();
-                }
-            });
-        });
-    </script>
+/* ── 安全关闭 ── */
+function secureClose(){
+  document.documentElement.style.transition='opacity .3s';
+  document.documentElement.style.opacity='0';
+  document.body.style.pointerEvents='none';
+  setTimeout(()=>{
+    try{
+      if(history.length<=1) window.close();
+      else window.open('','_self').close();
+      setTimeout(()=>{
+        if(!window.closed){
+          if(/iPad|iPhone|iPod/.test(navigator.userAgent))
+            document.body.innerHTML='<p style="color:#fff;text-align:center;padding:40px;font-family:sans-serif">请手动关闭本页面</p>';
+          else window.location.replace('about:blank');
+        }
+      },150);
+    }catch(e){window.location.href='about:blank';}
+  },320);
+}
+
+/* ── GitHub API 获取 Release 视频列表 ── */
+async function fetchReleaseVideos(){
+  const headers = { 'Accept': 'application/vnd.github+json' };
+  if(CONFIG.token) headers['Authorization'] = `Bearer ${CONFIG.token}`;
+
+  const apiUrl = CONFIG.tag === 'latest'
+    ? `https://api.github.com/repos/${CONFIG.repo}/releases/latest`
+    : `https://api.github.com/repos/${CONFIG.repo}/releases/tags/${CONFIG.tag}`;
+
+  const res = await fetch(apiUrl, { headers });
+
+  if(!res.ok){
+    let msg = `GitHub API 错误 ${res.status}`;
+    if(res.status===404) msg='仓库或 Release 不存在，请检查 CONFIG.repo 设置';
+    if(res.status===403) msg='API 请求频率超限，请稍后再试或填入 Token';
+    if(res.status===401) msg='Token 无效或权限不足';
+    throw new Error(msg);
+  }
+
+  const data = await res.json();
+  const assets = (data.assets || []).filter(a =>
+    CONFIG.videoExts.some(ext => a.name.toLowerCase().endsWith(ext))
+  );
+
+  if(assets.length === 0) throw new Error(`Release "${data.tag_name}" 中未找到视频文件（${CONFIG.videoExts.join(' ')}）`);
+
+  return assets.map(a => ({
+    name: a.name,
+    url:  a.browser_download_url,
+    size: fmtSize(a.size),
+  }));
+}
+
+/* ── 渲染播放列表 ── */
+function renderPlaylist(){
+  const list = $('playlist-list');
+  list.innerHTML = '';
+  playlist。forEach((v,i)=>{
+    const div = document.createElement('div');
+    div.className = 'pl-item' + (i===curIdx?' active':'');
+    div.innerHTML = `
+      <div class="pl-num">${i+1}</div>
+      <div>
+        <div class="pl-name">${v.name}</div>
+        <div class="pl-size">${v.size}</div>
+      </div>`;
+    div.addEventListener('click', ()=>{ loadVideo(i); });
+    list.appendChild(div);
+  });
+}
+
+/* ── 加载并播放指定索引视频 ── */
+function loadVideo(idx){
+  curIdx = (idx + playlist.length) % playlist.length;
+  const video = $('main-video');
+  video.src = playlist[curIdx].url;
+  video.load();
+  video.play().catch(()=>{ video.muted=true; video.play(); });
+  $('btn-play').textContent='⏸';
+  renderPlaylist();
+  // 高亮并滚动到当前项
+  const items = document.querySelectorAll('.pl-item');
+  if(items[curIdx]) items[curIdx].scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ── 启动播放流程 ── */
+async function startPlayback(){
+  $('loader').style.display = 'flex';
+  $('loader-text').textContent = '正在读取 GitHub Release…';
+
+  try {
+    playlist = await fetchReleaseVideos();
+
+    $('loader').style.display = 'none';
+    $('player-wrap').style.display = 'flex';
+    $('ctrl-bar').style.display = 'flex';
+    $('playlist').style.display = 'flex';
+
+    loadVideo(0);
+    initControls();
+
+  } catch(err) {
+    $('loader').style.display = 'none';
+    $('error-msg').textContent = err.message;
+    $('error-box').style.display = 'flex';
+  }
+}
+
+/* ── 进度条 ── */
+function initProgress(){
+  const video = $('main-video');
+  const bar   = $('progress-bar');
+  const wrap  = $('progress-wrap');
+  video.addEventListener('timeupdate', ()=>{
+    if(video.duration) bar.style.width = (video.currentTime/video.duration*100)+'%';
+  });
+  wrap.addEventListener('click', e=>{
+    if(!video.duration) return;
+    const pct = e.offsetX / wrap.offsetWidth;
+    video.currentTime = pct * video.duration;
+  });
+}
+
+/* ── 控制栏 ── */
+function initControls(){
+  const video = $('main-video');
+  initProgress();
+
+  // 视频结束 → 自动下一个
+  video.addEventListener('ended', ()=>{ loadVideo(curIdx+1); });
+
+  $('btn-play').addEventListener('click', ()=>{
+    if(video.paused){ video.play(); $('btn-play').textContent='⏸'; }
+    else            { video.pause(); $('btn-play').textContent='▶'; }
+  });
+  $('btn-prev').addEventListener('click', ()=>loadVideo(curIdx-1));
+  $('btn-next').addEventListener('click', ()=>loadVideo(curIdx+1));
+
+  $('btn-mute').addEventListener('click', ()=>{
+    video.muted = !video.muted;
+    $('btn-mute').textContent = video.muted ? '🔇' : '🔊';
+  });
+
+  const vol = $('vol-sl');
+  vol.addEventListener('input', ()=>{
+    video.volume = +vol.value;
+    video.muted  = vol.value==0;
+    $('btn-mute').textContent = video.muted?'🔇':'🔊';
+  });
+
+  // 全屏
+  $('btn-fs').addEventListener('click', ()=>{
+    const el = $('player-wrap');
+    if(!document.fullscreenElement)
+      (el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen).call(el);
+    else
+      (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
+  });
+
+  // 播放列表侧栏
+  $('btn-list').addEventListener('click', ()=>$('playlist').classList.toggle('open'));
+  $('btn-close-list').addEventListener('click', ()=>$('playlist').classList.remove('open'));
+
+  // 空格键播放/暂停
+  document.addEventListener('keydown', e=>{
+    if(e.key===' '&&e.target.tagName!=='INPUT'){ e.preventDefault();
+      video.paused?video.play():video.pause();
+      $('btn-play').textContent=video.paused?'▶':'⏸';
+    }
+    if(e.key==='ArrowRight') loadVideo(curIdx+1);
+    if(e.key==='ArrowLeft')  loadVideo(curIdx-1);
+  });
+
+  // 横竖屏
+  window.addEventListener('orientationchange',()=>{
+    setTimeout(()=>{ video.style.objectFit = screen.orientation?.angle%180?'cover':'contain'; }, 300);
+  });
+}
+
+/* ── 入口 ── */
+document.addEventListener('DOMContentLoaded', ()=>{
+  $('yes-btn').addEventListener('click', ()=>{
+    const modal = $('age-modal');
+    modal.style.transition='opacity .3s'; modal.style.opacity='0';
+    setTimeout(()=>{ modal.style.display='none'; startPlayback(); }, 300);
+  });
+  $('no-btn').addEventListener('click', ()=>{
+    alert('根据相关法律法规，未满18岁用户无法访问此内容。');
+    secureClose();
+  });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') secureClose(); });
+});
+</script>
+
+<!--
+════════════════════════════════════════════════════════════
+ 📦  GitHub Release 视频托管 — 完整操作指南
+════════════════════════════════════════════════════════════
+
+ ① 创建 GitHub 仓库（公开 Public 仓库，不需要 Token）
+    例：https://github.com/你的用户名/91video
+
+ ② 上传视频到 Release（不是直接 push 到仓库）
+    仓库页面 → 右侧 "Releases" → "Create a new release"
+    → 填写 Tag（如 v1.0）→ 拖入 .mp4 文件 → Publish release
+
+    ⚠️ 单文件无大小限制（GitHub Release 支持 2GB/文件）
+    ⚠️ 与 Git LFS 不同，Release Asset 不占仓库 LFS 配额
+
+ ③ 修改本文件顶部 CONFIG：
+    repo: "你的用户名/91video"
+    tag:  "latest"    // 或填具体标签如 "v1.0"
+
+ ④ 私有仓库 / Token 获取
+    GitHub → Settings → Developer settings
+    → Personal access tokens → Tokens (classic)
+    → Generate new token → 勾选 repo 权限
+    将 token 填入 CONFIG.token
+
+ ⑤ 多视频：只需在同一个 Release 里上传多个 .mp4
+    页面会自动列出所有视频并支持切换播放
+
+════════════════════════════════════════════════════════════
+-->
 </body>
 </html>
+
