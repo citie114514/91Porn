@@ -21,7 +21,7 @@
  
 1. 克隆或下载本项目
 2. 直接打开  index.html  即可预览
-3. 可部署到 GitHub Pages / Netlify / Vercel 等静态平台
+3. 可部署到 GitHub Pages 需要自行替换仓库名称和用户名
 4. 把链接发给朋友，等待爆笑（或绝交）现场
  
 部署示例（GitHub Pages）
