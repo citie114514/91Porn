@@ -25,8 +25,8 @@
 ### 方式一：本地预览
 
 ```bash
-git clone https://github.com/citie114514/91Porn.git
-cd 91Porn
+git clone https://github.com/citie114514/91.git
+cd 91
 # 直接用浏览器打开 index.html 即可
 ```
 
@@ -48,7 +48,7 @@ cd 91Porn
 
 ```javascript
 var CONFIG = {
-  repo:  "citie114514/91Porn",   // 你的仓库（owner/repo）
+  repo:  "citie114514/91",       // 你的仓库（owner/repo）
   tag:    "latest",                // Release 标签，latest 表示最新
   token: "",                       // 公开仓库留空即可
   exts:   [".mp4",".m4v",".webm",".mov",".mkv"]
@@ -89,7 +89,7 @@ var CONFIG = {
 
 ## 🧩 Bug 修复记录（本次优化）
 
-- ✅ 仓库名由 `RickBait` 更新为 `91Porn`（已重命名）
+- ✅ 仓库名由 `RickBait` 更新为 `91`（已重命名）
 - ✅ 移除不可靠的 `window.close()` 调用，未成年选项改为引导离开
 - ✅ 移除会误触关页的 `Esc` 全局快捷键
 - ✅ 自定义控制栏精简为原生 `<video controls>`，减少兼容性问题
