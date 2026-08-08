@@ -4,291 +4,97 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="referrer" content="no-referrer"/>
-<title>91官方网站</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>Chinese homemade video</title>
 <style>
-/* ===== 主题变量 ===== */
-:root{
-  --bg:       #06060f;
-  --bg2:      #0d0d1c;
-  --surface:  rgba(255,255,255,0.04);
-  --border:   rgba(255,255,255,0.08);
-  --teal:     #00d4c8;
-  --teal2:    #00a89f;
-  --coral:    #ff4757;
-  --coral2:   #cc2f3f;
-  --text:     #f0f0f8;
-  --muted:    rgba(200,200,220,0.55);
-  --ff-head:  'Syne', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --ff-body:  'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  --radius:   18px;
-}
-
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--ff-body);-webkit-font-smoothing:antialiased}
+html,body{width:100%;min-height:100%;background:#000;color:#e6e6e6;
+  font-family:'Helvetica Neue',Arial,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{text-decoration:underline;-webkit-tap-highlight-color:transparent}
 
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.14);border-radius:99px}
+/* ===== 复古免责声明主页 ===== */
+#age-modal{min-height:100vh;padding:20px 9% 70px;font-size:14px;line-height:1.75}
 
-/* ===== 粒子背景 ===== */
-#bg-canvas{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
+/* 顶部灰色警告框 */
+.warn-box{
+  background:#b9b9b9;color:#141414;
+  padding:10px 14px 12px;margin:4px 12% 22px 0;
+  font-size:12.5px;line-height:1.85;
+  font-family:'SimSun','宋体',serif;
 }
+.warn-box p+p{margin-top:12px}
+.warn-box .en{font-family:'Courier New',Courier,monospace;font-weight:700}
 
-/* 噪点纹理叠加 */
-body::before{
-  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity:0.5;
-}
+.line{margin-bottom:12px}
+.blob{display:inline-block;width:16px;height:14px;border-radius:4px;background:#8a8a8a;vertical-align:-2px;margin-right:8px}
+.red-link{color:#d40000}
+.cool-link{color:#6558c8}
 
-/* ===== 年龄验证弹窗 ===== */
-#age-modal{
-  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-  z-index:9000;padding:20px;
-  background:radial-gradient(ellipse at 50% 50%, rgba(0,212,200,0.07) 0%, rgba(6,6,15,0.97) 70%);
-  backdrop-filter:blur(3px);
-  -webkit-backdrop-filter:blur(3px);
-  animation:fadeIn 0.5s ease;
+/* RTA 标记 */
+.rta{
+  display:inline-block;margin-top:36px;padding:2px 12px 4px;
+  background:#d6d6d6;border:1px solid #777;border-radius:3px;
+  box-shadow:inset 0 0 0 2px #c2c2c2;
+  color:#2f2f2f;font-family:Arial,Helvetica,sans-serif;
+  font-weight:900;font-style:italic;font-size:18px;letter-spacing:3px;
 }
-
-.modal-box{
-  position:relative;
-  width:100%;max-width:460px;
-  background:linear-gradient(180deg,rgba(20,20,40,0.95),rgba(13,13,28,0.95));
-  border:1px solid rgba(0,212,200,0.2);
-  border-radius:24px;
-  padding:44px 36px 32px;
-  text-align:center;
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,0.04),
-    0 30px 80px rgba(0,0,0,0.8),
-    0 0 80px rgba(0,212,200,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-  animation:slideUp 0.55s cubic-bezier(0.17,0.67,0.35,1.2);
-  overflow:hidden;
-}
-
-/* 顶部渐变光线 */
-.modal-box::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--teal),transparent);
-}
-/* 顶部辉光 */
-.modal-box::after{
-  content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
-  width:240px;height:240px;border-radius:50%;
-  background:radial-gradient(circle,rgba(0,212,200,0.1) 0%,transparent 70%);
-  pointer-events:none;
-}
-
-.modal-icon{
-  width:64px;height:64px;
-  border-radius:50%;
-  background:linear-gradient(135deg,rgba(0,212,200,0.18),rgba(255,71,87,0.12));
-  border:1px solid rgba(0,212,200,0.3);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 22px;
-  font-size:26px;
-  box-shadow:0 0 30px rgba(0,212,200,0.15);
-}
-
-.modal-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:linear-gradient(135deg,rgba(255,71,87,0.22),rgba(255,71,87,0.08));
-  border:1px solid rgba(255,71,87,0.35);
-  color:var(--coral);
-  font-size:10px;font-weight:700;
-  letter-spacing:2.5px;text-transform:uppercase;
-  padding:6px 16px;border-radius:99px;
-  margin-bottom:20px;
-  font-family:var(--ff-head);
-}
-
-.modal-box h2{
-  font-family:var(--ff-head);
-  font-size:30px;font-weight:800;
-  color:#fff;
-  margin-bottom:14px;
-  letter-spacing:-0.01em;
-  background:linear-gradient(135deg,#fff 60%,rgba(0,212,200,0.85));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-
-.modal-box .sub{
-  font-size:13.5px;color:var(--muted);
-  line-height:1.85;margin-bottom:30px;
-  font-family:var(--ff-body);
-}
-.modal-box .sub strong{
-  color:var(--teal);font-weight:500;
-}
-
-.modal-actions{
-  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
-}
-
-.btn{
-  flex:1;max-width:180px;min-width:130px;
-  padding:14px 0;border:none;border-radius:12px;
-  font-size:14px;font-weight:700;letter-spacing:0.03em;
-  font-family:var(--ff-head);
-  cursor:pointer;position:relative;z-index:1;
-  -webkit-tap-highlight-color:transparent;
-  transition:transform 0.15s,box-shadow 0.15s,opacity 0.15s,background 0.15s;
-  overflow:hidden;
-}
-.btn::after{
-  content:'';position:absolute;inset:0;
-  background:rgba(255,255,255,0);
-  transition:background 0.15s;
-}
-.btn:hover::after{background:rgba(255,255,255,0.08)}
-.btn:active{transform:scale(0.96)}
-
-.btn-yes{
-  background:linear-gradient(135deg,var(--teal),var(--teal2));
-  color:#001a18;
-  box-shadow:0 4px 22px rgba(0,212,200,0.35);
-}
-.btn-yes:hover{box-shadow:0 8px 32px rgba(0,212,200,0.5)}
-
-.btn-no{
-  background:transparent;
-  border:1px solid rgba(255,71,87,0.45);
-  color:var(--coral);
-}
-.btn-no:hover{border-color:var(--coral);background:rgba(255,71,87,0.08)}
-
-.modal-note{
-  margin-top:24px;font-size:10.5px;
-  color:rgba(200,200,220,0.28);
-  letter-spacing:0.04em;
-  font-family:var(--ff-body);
-}
+.rta sup{font-size:9px;letter-spacing:0;font-style:normal}
 
 /* ===== 加载层 ===== */
-#loader{
-  position:fixed;inset:0;display:none;flex-direction:column;
-  align-items:center;justify-content:center;gap:20px;
-  z-index:8000;background:var(--bg);
-}
-.loader-inner{display:flex;flex-direction:column;align-items:center;gap:18px}
-
-.ring-wrap{position:relative;width:56px;height:56px}
-.ring{
-  position:absolute;inset:0;
-  border-radius:50%;
-  border:2px solid transparent;
-  border-top-color:var(--teal);
-  animation:spin 1s linear infinite;
-}
-.ring-outer{
-  border-width:1px;
-  border-top-color:rgba(255,71,87,0.5);
-  animation-duration:1.5s;animation-direction:reverse;
-}
-.ring-dot{
-  position:absolute;top:50%;left:50%;
-  width:6px;height:6px;border-radius:50%;margin:-3px;
-  background:var(--teal);
-  box-shadow:0 0 12px var(--teal);
-}
-
-#loader-txt{
-  font-family:var(--ff-head);
-  font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
-  color:var(--muted);
-}
+#loader{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#000;z-index:8000}
+.spinner{width:28px;height:28px;border:2px solid #3a3a3a;border-top-color:#ddd;border-radius:50%;animation:spin .9s linear infinite}
+#loader-txt{color:#999;font-size:12px;font-family:'Courier New',monospace;letter-spacing:.05em}
 
 /* ===== 错误层 ===== */
-#error-box{
-  position:fixed;inset:0;display:none;flex-direction:column;
-  align-items:center;justify-content:center;gap:16px;
-  z-index:8500;background:var(--bg);padding:30px;text-align:center;
-}
-.error-icon{font-size:40px;margin-bottom:4px}
-#error-box h3{
-  font-family:var(--ff-head);
-  color:var(--coral);font-size:20px;font-weight:700;letter-spacing:0.03em;
-}
-#error-box p{color:var(--muted);font-size:13px;max-width:360px;line-height:1.7;white-space:pre-line}
-#err-reload{
-  margin-top:6px;
-  padding:12px 30px;
-  background:linear-gradient(135deg,var(--teal),var(--teal2));
-  color:#001a18;border:none;border-radius:10px;
-  font-family:var(--ff-head);
-  cursor:pointer;font-size:13px;font-weight:700;letter-spacing:0.05em;
-  box-shadow:0 4px 18px rgba(0,212,200,0.35);
-  transition:transform 0.15s,box-shadow 0.15s;
-}
-#err-reload:hover{transform:translateY(-1px);box-shadow:0 6px 26px rgba(0,212,200,0.5)}
+#error-box{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#000;padding:30px;text-align:center;z-index:8500}
+#error-box h3{color:#d40000;font-size:18px;font-family:'Courier New',monospace}
+#error-box p{color:#bbb;font-size:13px;max-width:360px;line-height:1.7;white-space:pre-line}
+#err-reload{margin-top:8px;padding:8px 26px;background:none;border:1px solid #777;color:#eee;font-family:'Courier New',monospace;font-size:13px;cursor:pointer}
+#err-reload:hover{border-color:#eee}
 
 /* ===== 播放器（原生 video） ===== */
-#player-wrap{
-  position:fixed;inset:0;display:none;
-  align-items:center;justify-content:center;
-  background:#000;z-index:700;
-}
-#main-video{
-  width:100%;height:100%;object-fit:contain;background:#000;outline:none;
-}
+#player-wrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#000;z-index:700}
+#main-video{width:100%;height:100%;object-fit:contain;background:#000;outline:none}
 @media(orientation:portrait) and (max-width:768px){
   #main-video{object-fit:cover}
 }
 
-/* ===== 动画 ===== */
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{
-  from{opacity:0;transform:translateY(30px) scale(0.96)}
-  to{opacity:1;transform:none}
-}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
-
-<!-- 年龄验证 -->
+<!-- 年龄验证 / 免责声明 -->
 <div id="age-modal">
-  <div class="modal-box">
-    <div class="modal-icon">🔞</div>
-    <div class="modal-badge">⚠ 内容警告</div>
-    <h2>年龄验证</h2>
-    <p class="sub">
-      本网站含有仅适合 <strong>18岁及以上</strong> 成年人的内容。<br>
-      继续访问即表示您确认已达法定年龄，<br>并同意相关服务条款与法律法规。
-    </p>
-    <div class="modal-actions">
-      <button class="btn btn-yes" id="yes-btn">✓ 我已满18岁</button>
-      <button class="btn btn-no"  id="no-btn">✕ 未满18岁</button>
-    </div>
-    <div class="modal-note">根据《网络安全法》等相关法律法规要求</div>
+  <div class="warn-box">
+    <p>警告：本站只適合十八歲或以上人士觀看。本站內容可能令人反感；不可將本站的內容派發、傳閱、出售、出租、交給或借予年齡未滿18歲的人士或將本站內容向該人士出示、播放或放映。</p>
+    <p class="en">LEGAL DISCLAIMER WARNING: THIS DISCUSSION BOARD CONTAINS MATERIAL WHICH MAY OFFEND AND MAY NOT BE DISTRIBUTED, CIRCULATED, SOLD, HIRED, GIVEN, LENT, SHOWN, PLAYED OR PROJECTED TO A PERSON UNDER THE AGE OF 18 YEARS.</p>
+    <p>警告：嚴禁發表有人獸交、兒童色情、暴力、血腥、變態及令人噁心之內容。本網站涉及成人內容未滿18歲或所在地區法律不允許成人內容者，請馬上離開，否則後果自負。<br/>你是否年滿十八歲並同意要進入本網站，若否請按"離開"。</p>
   </div>
+
+  <p class="line"><span class="blob"></span>主旨：娱乐大家，不作恶</p>
+  <p class="line">注意保护隐私。拒绝乱伦、暴力、偷拍、吸毒、迷奸及涉及未成年（18周岁以下）的一切行为。我们呼吁共同抵制和谴责所有形式的网络人肉搜索、网络勒索、网络欺凌等行为。<br/>大陆人士请不要访问本站<br/>
+    <a id="yes-btn" class="red-link" href="#">我已年满18岁，并且我不在中国大陆</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="no-btn" class="red-link" href="#">否，我要离开</a>
+  </p>
+
+  <p class="line">本网站永久免费，凡是需要先买VIP，和注册账号才能看的都是假网站！<a id="fake-check" class="cool-link" href="#">点此查看网站是否是真的</a></p>
+
+  <p class="line">You need to be at least 18 years to access this website. Please confirm below that you are at least 18 years or use the "Cancel" button to leave.</p>
+
+  <p class="line"><a id="yes-btn2" class="cool-link" href="#">Yes, I am at least 18 years old.</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="no-btn2" class="cool-link" href="#">Cancel</a></p>
+
+  <div class="rta">RTA<sup>®</sup></div>
 </div>
 
 <!-- 加载中 -->
 <div id="loader">
-  <div class="loader-inner">
-    <div class="ring-wrap">
-      <div class="ring ring-outer"></div>
-      <div class="ring"></div>
-      <div class="ring-dot"></div>
-    </div>
-    <div id="loader-txt">正在读取 GitHub Release…</div>
-  </div>
+  <div class="spinner"></div>
+  <div id="loader-txt">正在读取 GitHub Release…</div>
 </div>
 
 <!-- 错误提示 -->
 <div id="error-box">
-  <div class="error-icon">⚠</div>
-  <h3>加载失败</h3>
+  <h3>⚠ 加载失败</h3>
   <p id="err-msg">无法获取视频列表，请检查仓库配置。</p>
   <button id="err-reload">重新加载</button>
 </div>
@@ -325,76 +131,6 @@ function fmtSize(b){
   if(b < 1073741824) return (b/1048576).toFixed(1) + ' MB';
   return (b/1073741824).toFixed(2) + ' GB';
 }
-
-/* ===== 粒子背景（带连线） ===== */
-(function(){
-  var c   = gid('bg-canvas');
-  var ctx = c.getContext('2d');
-
-  function resize(){
-    c.width  = window.innerWidth;
-    c.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  var N = 60;
-  var pts = [];
-  for(var i = 0; i < N; i++){
-    pts.push({
-      x:  Math.random() * window.innerWidth,
-      y:  Math.random() * window.innerHeight,
-      r:  Math.random() * 1.2 + 0.3,
-      vx: (Math.random() - 0.5) * 0.22,
-      vy: (Math.random() - 0.5) * 0.22
-    });
-  }
-
-  var LINK_DIST = 110;
-
-  function loop(){
-    ctx.clearRect(0, 0, c.width, c.height);
-
-    for(var i = 0; i < pts.length; i++){
-      var p = pts[i];
-      p.x += p.vx; p.y += p.vy;
-      if(p.x < 0) p.x = c.width;
-      if(p.x > c.width) p.x = 0;
-      if(p.y < 0) p.y = c.height;
-      if(p.y > c.height) p.y = 0;
-    }
-
-    /* 连线 */
-    for(var i = 0; i < pts.length; i++){
-      for(var j = i+1; j < pts.length; j++){
-        var dx = pts[i].x - pts[j].x;
-        var dy = pts[i].y - pts[j].y;
-        var d  = Math.sqrt(dx*dx + dy*dy);
-        if(d < LINK_DIST){
-          var a = (1 - d / LINK_DIST) * 0.14;
-          ctx.beginPath();
-          ctx.moveTo(pts[i].x, pts[i].y);
-          ctx.lineTo(pts[j].x, pts[j].y);
-          ctx.strokeStyle = 'rgba(0,212,200,' + a + ')';
-          ctx.lineWidth = 0.6;
-          ctx.stroke();
-        }
-      }
-    }
-
-    /* 粒子点 */
-    for(var i = 0; i < pts.length; i++){
-      var p = pts[i];
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0,212,200,0.5)';
-      ctx.fill();
-    }
-
-    requestAnimationFrame(loop);
-  }
-  loop();
-})();
 
 /* ===== 拉取 GitHub Release 视频列表 ===== */
 function fetchVideos(){
@@ -477,31 +213,27 @@ function startPlayback(){
     });
 }
 
-/* ===== 未成年提示（不尝试关闭窗口，现代浏览器均会拦截） ===== */
+/* ===== 未成年 / 离开提示 ===== */
 function denyAccess(){
-  var box = gid('age-modal');
-  box.innerHTML =
-    '<div class="modal-box">' +
-      '<div class="modal-icon">🚫</div>' +
-      '<h2>访问已拒绝</h2>' +
-      '<p class="sub">根据相关法律法规，未满18岁用户无法访问本内容。</p>' +
-      '<div class="modal-actions">' +
-        '<a class="btn btn-no" href="https://www.gov.cn/" target="_self" rel="noopener">离开本页</a>' +
-      '</div>' +
-    '</div>';
+  gid('age-modal').innerHTML =
+    '<p class="line" style="margin-top:60px">根据相关法律法规，未满18岁用户无法访问本站内容。</p>' +
+    '<p class="line"><a class="red-link" href="https://www.gov.cn/" rel="noopener">离开本页</a></p>';
 }
 
 /* ===== 入口 ===== */
+function enterSite(){
+  hide('age-modal');
+  startPlayback();
+}
+
 document.addEventListener('DOMContentLoaded', function(){
-  gid('yes-btn').addEventListener('click', function(){
-    var modal = gid('age-modal');
-    modal.style.transition = 'opacity 0.35s';
-    modal.style.opacity    = '0';
-    setTimeout(function(){ hide('age-modal'); startPlayback(); }, 350);
+  ['yes-btn','yes-btn2'].forEach(function(id){
+    gid(id).addEventListener('click', function(e){ e.preventDefault(); enterSite(); });
   });
-
-  gid('no-btn').addEventListener('click', denyAccess);
-
+  ['no-btn','no-btn2'].forEach(function(id){
+    gid(id).addEventListener('click', function(e){ e.preventDefault(); denyAccess(); });
+  });
+  gid('fake-check').addEventListener('click', function(e){ e.preventDefault(); });
   gid('err-reload').addEventListener('click', function(){ location.reload(); });
 });
 </script>
