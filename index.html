@@ -7,50 +7,44 @@
 <title>Chinese homemade video</title>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;min-height:100%;background:#000;color:#e6e6e6;
+html,body{width:100%;min-height:100%;background:#fff;color:#000;
   font-family:'Helvetica Neue',Arial,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
   -webkit-font-smoothing:antialiased}
 a{text-decoration:underline;-webkit-tap-highlight-color:transparent}
 
-/* ===== 复古免责声明主页 ===== */
-#age-modal{min-height:100vh;padding:20px 9% 70px;font-size:14px;line-height:1.75}
+/* ===== 复古免责声明主页（浅色，同原站） ===== */
+#age-modal{min-height:100vh;padding:36px 4% 80px 22%;font-size:15.5px;line-height:1.75}
 
-/* 顶部灰色警告框 */
-.warn-box{
-  background:#b9b9b9;color:#141414;
-  padding:10px 14px 12px;margin:4px 12% 22px 0;
-  font-size:12.5px;line-height:1.85;
-  font-family:'SimSun','宋体',serif;
+/* 顶部警告图 */
+.warn-img{display:block;width:72%;max-width:980px;margin:0 0 26px}
+
+.line{margin-bottom:13px}
+.red-link{color:#e00000;font-weight:700}
+.blue-link{color:#0000cc}
+
+/* RTA 标记（描边字） */
+.rta{display:inline-block;margin-top:46px;color:#fff;
+  -webkit-text-stroke:1.6px #666;
+  font-family:Arial,Helvetica,sans-serif;
+  font-weight:900;font-style:italic;font-size:26px;letter-spacing:2px}
+.rta sup{-webkit-text-stroke:0;color:#666;font-size:11px;letter-spacing:0;font-style:normal}
+
+@media(max-width:768px){
+  #age-modal{padding:20px 6% 60px 8%}
+  .warn-img{width:100%}
 }
-.warn-box p+p{margin-top:12px}
-.warn-box .en{font-family:'Courier New',Courier,monospace;font-weight:700}
-
-.line{margin-bottom:12px}
-.blob{display:inline-block;width:16px;height:14px;border-radius:4px;background:#8a8a8a;vertical-align:-2px;margin-right:8px}
-.red-link{color:#d40000}
-.cool-link{color:#6558c8}
-
-/* RTA 标记 */
-.rta{
-  display:inline-block;margin-top:36px;padding:2px 12px 4px;
-  background:#d6d6d6;border:1px solid #777;border-radius:3px;
-  box-shadow:inset 0 0 0 2px #c2c2c2;
-  color:#2f2f2f;font-family:Arial,Helvetica,sans-serif;
-  font-weight:900;font-style:italic;font-size:18px;letter-spacing:3px;
-}
-.rta sup{font-size:9px;letter-spacing:0;font-style:normal}
 
 /* ===== 加载层 ===== */
-#loader{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#000;z-index:8000}
-.spinner{width:28px;height:28px;border:2px solid #3a3a3a;border-top-color:#ddd;border-radius:50%;animation:spin .9s linear infinite}
-#loader-txt{color:#999;font-size:12px;font-family:'Courier New',monospace;letter-spacing:.05em}
+#loader{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#fff;z-index:8000}
+.spinner{width:28px;height:28px;border:2px solid #ccc;border-top-color:#333;border-radius:50%;animation:spin .9s linear infinite}
+#loader-txt{color:#666;font-size:12px;font-family:'Courier New',monospace;letter-spacing:.05em}
 
 /* ===== 错误层 ===== */
-#error-box{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#000;padding:30px;text-align:center;z-index:8500}
-#error-box h3{color:#d40000;font-size:18px;font-family:'Courier New',monospace}
-#error-box p{color:#bbb;font-size:13px;max-width:360px;line-height:1.7;white-space:pre-line}
-#err-reload{margin-top:8px;padding:8px 26px;background:none;border:1px solid #777;color:#eee;font-family:'Courier New',monospace;font-size:13px;cursor:pointer}
-#err-reload:hover{border-color:#eee}
+#error-box{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#fff;padding:30px;text-align:center;z-index:8500}
+#error-box h3{color:#e00000;font-size:18px;font-family:'Courier New',monospace}
+#error-box p{color:#444;font-size:13px;max-width:360px;line-height:1.7;white-space:pre-line}
+#err-reload{margin-top:8px;padding:8px 26px;background:none;border:1px solid #999;color:#000;font-family:'Courier New',monospace;font-size:13px;cursor:pointer}
+#err-reload:hover{border-color:#000}
 
 /* ===== 播放器（原生 video） ===== */
 #player-wrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#000;z-index:700}
@@ -66,22 +60,18 @@ a{text-decoration:underline;-webkit-tap-highlight-color:transparent}
 
 <!-- 年龄验证 / 免责声明 -->
 <div id="age-modal">
-  <div class="warn-box">
-    <p>警告：本站只適合十八歲或以上人士觀看。本站內容可能令人反感；不可將本站的內容派發、傳閱、出售、出租、交給或借予年齡未滿18歲的人士或將本站內容向該人士出示、播放或放映。</p>
-    <p class="en">LEGAL DISCLAIMER WARNING: THIS DISCUSSION BOARD CONTAINS MATERIAL WHICH MAY OFFEND AND MAY NOT BE DISTRIBUTED, CIRCULATED, SOLD, HIRED, GIVEN, LENT, SHOWN, PLAYED OR PROJECTED TO A PERSON UNDER THE AGE OF 18 YEARS.</p>
-    <p>警告：嚴禁發表有人獸交、兒童色情、暴力、血腥、變態及令人噁心之內容。本網站涉及成人內容未滿18歲或所在地區法律不允許成人內容者，請馬上離開，否則後果自負。<br/>你是否年滿十八歲並同意要進入本網站，若否請按"離開"。</p>
-  </div>
+  <img class="warn-img" src="warn.png" alt="警告：本站只適合十八歲或以上人士觀看。LEGAL DISCLAIMER WARNING"/>
 
-  <p class="line"><span class="blob"></span>主旨：娱乐大家，不作恶</p>
+  <p class="line">91porn主旨：娱乐大家，不作恶</p>
   <p class="line">注意保护隐私。拒绝乱伦、暴力、偷拍、吸毒、迷奸及涉及未成年（18周岁以下）的一切行为。我们呼吁共同抵制和谴责所有形式的网络人肉搜索、网络勒索、网络欺凌等行为。<br/>大陆人士请不要访问本站<br/>
     <a id="yes-btn" class="red-link" href="#">我已年满18岁，并且我不在中国大陆</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="no-btn" class="red-link" href="#">否，我要离开</a>
   </p>
 
-  <p class="line">本网站永久免费，凡是需要先买VIP，和注册账号才能看的都是假网站！<a id="fake-check" class="cool-link" href="#">点此查看网站是否是真的</a></p>
+  <p class="line">本网站永久免费，凡是需要先买VIP，和注册账号才能看的都是假网站！<a id="fake-check" class="blue-link" href="#">点此查看网站是否是真的</a></p>
 
   <p class="line">You need to be at least 18 years to access this website. Please confirm below that you are at least 18 years or use the "Cancel" button to leave.</p>
 
-  <p class="line"><a id="yes-btn2" class="cool-link" href="#">Yes, I am at least 18 years old.</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="no-btn2" class="cool-link" href="#">Cancel</a></p>
+  <p class="line"><a id="yes-btn2" class="blue-link" href="#">Yes, I am at least 18 years old.</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="no-btn2" class="blue-link" href="#">Cancel</a></p>
 
   <div class="rta">RTA<sup>®</sup></div>
 </div>
@@ -217,7 +207,7 @@ function startPlayback(){
 function denyAccess(){
   gid('age-modal').innerHTML =
     '<p class="line" style="margin-top:60px">根据相关法律法规，未满18岁用户无法访问本站内容。</p>' +
-    '<p class="line"><a class="red-link" href="https://www.google.com/" rel="noopener">离开本页</a></p>';
+    '<p class="line"><a class="red-link" href="https://www.gov.cn/" rel="noopener">离开本页</a></p>';
 }
 
 /* ===== 入口 ===== */
